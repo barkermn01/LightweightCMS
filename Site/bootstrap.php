@@ -26,7 +26,7 @@ $_URL = array();
  *
  * @param string $class_name
  */
-function __autoload($class_name){
+spl_autoload_register(function ($class_name){
 	$className = explode('_', $class_name);
 	$path = "";
 	foreach($className as $key => $val){
@@ -34,7 +34,7 @@ function __autoload($class_name){
 	}
 	$path = substr($path, 0, strlen($path)-1);
 	require_once(strtolower($path).".php");
-}
+});
 ## end of autoloader
 Controller::getLoadDetails($controller, $view);
 $action = $view;
