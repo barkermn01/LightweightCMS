@@ -1,9 +1,9 @@
 <?php
 class config_MySQL{
-	private $host = "localhost";
-	private $user = "doxie";
-	private $pass = "a6aAjqByct9KFNJT";
-	private $db = "doxie";
+	private $host = "";
+	private $user = "";
+	private $pass = "";
+	private $db = "";
 	private $connection;
 	
 	public function __construct(){

@@ -115,6 +115,9 @@ class controllers_admin extends Controller{
 		$this->checkSession();
 		$URL = explode("/", $_SERVER['REQUEST_URI']);
 		$method = (!empty($URL[4]))? $URL[4]."Action": "indexAction";
+		if(empty($URL[3])){
+			$URL[3] = "home";
+		}
 		$obj = Lightweight::AdminPlugin($URL[3]);
 		$obj->$method();
 	}
