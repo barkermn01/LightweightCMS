@@ -1,0 +1,4 @@
+LightweightCMS
+==============
+
+PHP MVC CMS
