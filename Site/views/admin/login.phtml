@@ -1,0 +1,13 @@
+<?php $this->load("include/html_head"); ?>
+<div class="loginBox">
+	<?php if($this->failed){ ?>
+        <div class="error">Login Invalid</div>
+    <?php } ?>
+    <form action="/admin/login" method="post">
+    Username: <input type="text" name="username" /><br />
+    Password: <input type="password" name="password" id="password" /><br />
+    Remeber Me: <input type="checkbox" name="remeber" value="true" />
+    <input type="submit" value="Login" />
+    </form>
+</div>
+<?php $this->load("include/html_foot"); ?>

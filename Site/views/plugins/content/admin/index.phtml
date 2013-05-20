@@ -1,0 +1,90 @@
+<?php 
+	echo $this->menu->buildOutput();
+?>
+Welcome to the Content System please click a page to edit it
+<style type="text/css">
+ul, li{
+	list-style:none;
+	margin-left:0;
+	padding:0;
+}
+ul li ul li{
+	float:left;
+}
+
+ul.table{
+	width:800px;
+}
+
+ul.table li.id{
+	width:60px;
+	text-align:center;
+}
+
+ul.table li.name{
+	width:420px;
+}
+
+ul.table li.changedBy{
+	width:100px;
+}
+
+ul.table li.changedOn{
+	width:100px;
+}
+
+ul.table li.edit{
+	width:60px;
+	text-align:center;
+}
+
+ul.table li.delete{
+	width:60px;
+	text-align:center;
+}
+
+ul.table ul.header{
+	background-color:#888;
+	height:20px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+
+.clear{
+	clear:both;
+}
+</style>
+<ul class="table">
+	<li>
+    	<ul class="header">
+        	<li class="id">ID</li>
+        	<li class="name">Page Title</li>
+        	<li class="changedBy">Changed By</li>
+        	<li class="changedOn">Changed On</li>
+        	<li class="edit">Edit</li>
+        	<li class="delete">Delete</li>
+            <li class="clear"></li>
+        </ul>
+    </li>
+<?php
+	foreach($this->data as $key => $val){
+?>
+	<li>
+    	<ul class="">
+        	<li class="id"><?php echo $val['page_id']; ?></li>
+        	<li class="name"><?php echo $val['title']; ?></li>
+        	<li class="changedBy"><?php echo $val['changed_by']; ?></li>
+        	<li class="changedOn"><?php echo date("j/n/y G:i", strtotime($val['changed'])); ?></li>
+        	<li class="edit">
+            <a href="<?php echo $this->url->getMethodAddr("edit")."/id/".$val['page_id'] ?>">Edit</a>
+            </li>
+        	<li class="delete">
+            <a href="<?php echo $this->url->getMethodAddr("delete")."/id/".$val['page_id'] ?>">Delete</a>
+            </li>
+            <li class="clear"></li>
+        </ul>
+    </li>
+<?php
+	}
+?>
+</ul>

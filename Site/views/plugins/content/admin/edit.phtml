@@ -1,0 +1,40 @@
+<?php 
+	echo $this->menu->buildOutput();
+?>
+
+<link rel="stylesheet" type="text/css" href="<?php echo $this->url->getStyleUrl("edit.css"); ?>"/>
+<?php if(isset($this->saved) && $this->saved){ ?>
+<div class="saved">
+	Page has been Saved
+</div>
+<?php } if(isset($this->error) && $this->error){ ?>
+<div class="error">
+	Page has been not been saved there was an error<br />
+    <?php echo $this->errorText; ?>
+</div>
+<?php } ?>
+<div class="form">
+	<form id="content_frm" action="<?php echo $this->url->getFormAddr(); ?>/id/<?php echo cleanData::URL("id"); ?>/post" method="post">
+    	<div class="page">
+        	<div class="title-edit">Edit Page Content</div>
+            <div class="form">
+            	<label for="title">Title</label>
+                <input type="text" class="formElem" name="title" id="title" value="<?php echo $this->data['title']; ?>" />
+                <div class="clear"></div>
+            	<label for="title">Homepage</label>
+                <input type="checkbox" alt="Set page to homepage can't be turned off" name="default" id="default" value="1" <?php if($this->data['default'] == "1") echo 'checked="checked" disabled="disabled"'; ?> />
+                <div class="clear"></div>
+                <label for="content">Content</label>
+                <textarea id="content" class="formElem editor" name="content"><?php echo $this->data['content']; ?></textarea>
+                <div class="clear"></div>
+        		<div class="title">SEO Content</div>
+                <label for="meta_description">Meta Description</label>
+                <input type="text" class="formElem" name="meta_description" id="meta_description" value="<?php echo $this->data['meta_description']; ?>" />
+                <div class="clear"></div>
+                <label for="meta_keywords">Meta Keywords</label>
+                <input type="text" class="formElem" name="meta_keywords" id="meta_keywords" value="<?php echo $this->data['meta_keywords']; ?>" />
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>

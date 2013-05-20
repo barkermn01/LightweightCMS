@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Doxie Promo - <?php echo (isset($this->pageTitle))? $this->pageTitle:""; ?></title>
+        <?php if(isset($this->CSS)){ foreach($this->CSS as $file){ ?>
+        <link rel="stylesheet" href="<?php echo $file; ?>" />
+        <?php } } ?>
+        <?php if(isset($this->JS)){ foreach($this->JS as $file){ ?>
+        <script type="text/javascript" src="<?php echo $file; ?>"></script>
+        <?php } } ?>
+        <?php if(isset($this->content['meta_description'])){ ?>
+        <meta name="description" content="<?php echo $this->content['meta_description']; ?>" /> 
+		<?php } ?>
+        <?php if(isset($this->content['meta_keywords'])){ ?>
+        <meta name="keywords" content="<?php echo $this->content['meta_keywords']; ?>" /> 
+		<?php } ?>
+	</head>
+    <body>

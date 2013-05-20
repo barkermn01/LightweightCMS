@@ -1,0 +1,42 @@
+<?php 
+	echo $this->menu->buildOutput();
+?>
+
+<link rel="stylesheet" type="text/css" href="<?php echo $this->url->getStyleUrl("edit.css"); ?>"/>
+<div class="form">
+	<form id="plugins_frm" action="<?php echo $this->url->getFormAddr(); ?>/post" method="post">
+    	<div class="page">
+        	<div class="title-edit">Plugin Optios</div>
+            <div class="form">
+            	<input type="hidden" value="1" name="custom" />
+                <input type="hidden" value="1" name="visable" />
+            	<label for="title">Name</label>
+                <input type="name" class="formElem" name="name" id="name" value="<?php echo $this->data['name']; ?>" />
+                <div class="clear"></div>
+                <label for="author">Author</label>
+                <input type="text" class="formElem" name="author" id="author" value="<?php echo $this->data['author']; ?>" />
+                <div class="clear"></div>
+                <label for="image">Image</label>
+                <img id="image" src="<?php echo $this->data['image']; ?>" />
+                <div class="clear"></div>
+                <?php if($this->data['custom']){ ?>
+                <label for="imageu">Image Upload</label>
+                <input type="file" name="imageu" id="imageu" />
+                <div class="clear"></div>
+                <?php } ?>
+                <label for="active">Active</label>
+                <select id="active" name="active">
+                	<option <?php if($this->data['active'] == '0'){ ?>selected="selected"<?php } ?> value="0">No</option>
+                	<option <?php if($this->data['active'] == '1'){ ?>selected="selected"<?php } ?> value="1">Yes</option>
+                </select>
+                <div class="clear"></div>
+                <label for="active">Show as Tab</label>
+                <select id="active" name="tab">
+                	<option <?php if($this->data['tab'] == '0'){ ?>selected="selected"<?php } ?> value="0">No</option>
+                	<option <?php if($this->data['tab'] == '1'){ ?>selected="selected"<?php } ?> value="1">Yes</option>
+                </select>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Doxie Promo - <?php echo (isset($this->pageTitle))? $this->pageTitle:""; ?></title>
+        <?php if(isset($this->CSS)){ foreach($this->CSS as $file){ ?>
+        <link rel="stylesheet" href="/css/<?php echo $file; ?>" />
+        <?php } } ?>
+        <?php if(isset($this->JS)){ foreach($this->JS as $file){ ?>
+        <script type="text/javascript" src="/js/<?php echo $file; ?>"></script>
+        <?php } } ?>
+	</head>
+    <body>

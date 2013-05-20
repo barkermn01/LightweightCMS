@@ -1,0 +1,9 @@
+<link rel="stylesheet" type="text/css" href="<?php echo $this->url->getStyleUrl("edit.css"); ?>"/>
+<div class="form">
+	<form id="plugins_frm" action="<?php echo $this->url->getFormAddr(); ?>/id/<?php echo cleanData::URL("id"); ?>/post" method="post">
+    	<div class="page">
+        	<label for="upload">Select plugin zip</label>
+            <input type="file" name="upload" accept=".accept,.tar,.gz" />
+        </div>
+     </form>
+</div>
