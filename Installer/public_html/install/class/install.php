@@ -55,12 +55,14 @@ class config_MySQL{
 		}
 	 
 		// Open the source directory to read in files
-		$i = new DirectoryIterator($src);
+		$i = new DirectoryIterator(realpath($src));
 		foreach($i as $f) {
 			if($f->isFile()) {
-				rename($f->getRealPath(), "$dest/" . $f->getFilename());
+				echo "installed file: ".$dest.$this->ds.$f->getFilename()." \r\n";
+				rename($f->getRealPath(), $dest.$this->ds.$f->getFilename());
 			} else if(!$f->isDot() && $f->isDir()) {
-				$this->rmove($f->getRealPath(), "$dest/$f");
+				echo "installing dir: ".$dest.$this->ds.$f." \r\n";
+				$this->rmove($f->getRealPath(), $dest.$this->ds.$f);
 			}
 		}
 	}
@@ -218,11 +220,14 @@ class config_MySQL{
 			
 			echo "Installing LightweightCMS Files<br />";
 			ob_flush();
+			echo "<pre>";
 			$this->rmove("LWCMS-Installer-".$_SESSION['version']."/site", "../../");
+			echo "</pre>";
 			
 			echo "Building LightweightCMS Config Files<br />";
 			ob_flush();
 			$this->writeConfig();
+			die();
 			
 			echo "Cleaning Install Files<br />";
 			ob_flush();
