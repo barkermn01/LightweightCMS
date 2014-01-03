@@ -50,14 +50,10 @@ class library_template{
     }
 
     public function check($pathName){
-        if(
+        return (
 			empty($this->plugin) && file_exists("../views/$pathName.phtml") ||
 			!empty($this->plugin) && file_exists("../views/plugins/$this->plugin/$pathName.phtml")
-		){
-            return true;
-        }else{
-            return false;
-        }
+		);
     }
 }
 ?>

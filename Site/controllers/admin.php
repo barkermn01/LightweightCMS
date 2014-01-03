@@ -93,9 +93,9 @@ class controllers_admin extends Controller{
 			"ckeditor/ckeditor.js", 
 			"jQuery.js", 
 			"jQuery-ui.js", 
-			"ckeditor/adapters/jquery.js", 
-			"admin.js", 
-			"jQuery.Form.js"
+			"ckeditor/adapters/jquery.js",  
+			"jQuery.Form.js",
+			"admin.js"
 		);
 		$mysql = new config_mysql();
 		$dbUser = $mysql->query()->select("`username`", "users", array("user_id" => $_SESSION['user']))->exec("getRow");

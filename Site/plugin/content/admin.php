@@ -2,107 +2,79 @@
 class plugin_content_admin extends Plugin{
 	
 	public function indexAction(){
-		$data = $this->db->query()->select("`page_id`, `title`, `creator`, `created`, `updator`, `updated`, `default`", "content")->exec("getRows");
-		foreach($data as $key => $page){
-			$data[$key]['changed_by'] = (!empty($page['updator']))? $page['updator']: $page['creator'];
-			$data[$key]['changed'] = (!empty($page['updated']))? $page['updated']: $page['created'];
-			$user = $this->db->query()->select("`username`", "users", array("user_id" => $data[$key]['changed_by']))->exec("getRow");
-			$data[$key]['changed_by'] = $user['username'];
-		}
-		$this->tpl->data = $data;
-		$js = $this->tpl->menu->navigate("create");
-		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Add"), $js);
-		$this->tpl->load("admin/index");
+		$this->listPageAction();
 	}
-	
-	public function editAction(){
-		if(cleanData::issetURL("post")){
-			try{
-				$title = cleanData::POST('title');
-				if(empty($title)) throw new Exception("Title can't be empty!");
-				$this->db->query()->update("content", 
-					array(
-						"title" => $title,
-						"content" => cleanData::POST('content'),
-						"meta_description" => cleanData::POST('meta_description'),
-						"meta_keywords" => cleanData::POST('meta_keywords')
-					),
-					array(
-						"page_id" => cleanData::URL('id')
-					)
-				)->exec();
-				$this->tpl->saved = true;
-			}catch(Exception $e){
-				$this->tpl->error = true;
-				$this->tpl->errorText = $e->getMessage()."<br />".$e->getTraceAsString();
-			}
-		}
 		
-		$data = $this->db->query()->select("*", "content", array("page_id" => cleanData::URL("id")))->exec("getRow");
-		$this->tpl->data = $data;
-		$js = "$('#content_frm').submit();";
-		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Save"), $js);
-		$js = $this->tpl->menu->navigate();
-		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Back"), $js);
-		if(cleanData::issetURL("saved")){
-			$this->saved = true;
-		}
-		$this->tpl->load("admin/edit");
-	}
-	
-	public function createAction(){
-		if(cleanData::issetURL("post")){
-			try{
-				$title = cleanData::POST('title');
-				if(empty($title)) throw new Exception("Title can't be empty!");
-				$id = $this->db->query()->insert( 
-					array(
-						"title" => $title,
-						"content" => cleanData::POST('content'),
-						"meta_description" => cleanData::POST('meta_description'),
-						"meta_keywords" => cleanData::POST('meta_keywords'),
-						"creator" => $_SESSION['user']
-					),
-					"content"
-				)->exec("insert_id");
-				
-				header("location: ".$this->tpl->url->getMethodAddr("edit")."/id/".$id."/saved");
-				return;
-			}catch(Exception $e){
-				$this->tpl->error = true;
-				$this->tpl->errorText = $e->getMessage()."<br />".$e->getTraceAsString();
-			}
-		}
-
-		$js = "$('#content_frm').submit();";
-		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Save"), $js);
+	// page actions
+	public function listPageAction(){
+		// setup the sub menu
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Add"), $this->tpl->menu->navigate("addPage"));
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Pie Chart"), $this->tpl->menu->navigate("listBlockType"));
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Delete"), $this->tpl->menu->navigate("removePage"));
 		
-		$js = $this->tpl->menu->navigate();
-		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Back"), $js);
+		$this->tpl->pages = $this->db->query()->select("*","pages")->exec("getRows");
 		
-		$this->tpl->load("admin/create");
+		// load the tpl
+		$this->tpl->load("admin/page/list");
 	}
 	
-	public function deleteAction(){
-		if(cleanData::issetURL("id")){
-			$this->db->query()->delete("content", array(
-				"page_id" => cleanData::URL("id")
-			))->exec();
-			header("location: ".$this->tpl->url->getMethodAddr("index"));
-			return;
-		}
-		trigger_error("Can't delete all pages");
+	public function addPageAction(){
+		// setup the sub menu
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Save"), "return false");
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Modify"), $this->tpl->menu->navigate("listPage"));
+		
+		// load the tpl
+		$this->tpl->load("admin/page/add");
 	}
 	
-	public function getLinksAction(){
-		$pages = $this->db->query()->select('`page_id`, `title`', 'content')->exec("getRows");
-		foreach($pages as $key => $arr){
-			$pages[$key]['url'] = str_replace(' ', '_', $arr['title']);
-			$pages[$key]['page_name'] = $arr['title'];
-			unset($pages[$key]['title']);
-		}
-		echo json_encode($pages);
-		return;
+	public function removePageAction(){
+		// setup the sub menu
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Tick"), "return false");
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Modify"), $this->tpl->menu->navigate("listPage"));
+		
+		// load the tpl
+		$this->tpl->load("admin/page/remove");
+	}
+	
+	public function editPageAction(){
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Save"), "return false");
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Modify"), $this->tpl->menu->navigate("listPage"));
+		
+		// load the tpl
+		$this->tpl->load("admin/page/edit");
+	}
+	
+	// block type functions
+	public function listBlockTypeAction(){
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Add"), $this->tpl->menu->navigate("addBlockType"));
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Modify"), $this->tpl->menu->navigate("listPage"));
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Delete"), $this->tpl->menu->navigate("removeBlockType"));
+		
+		// load the tpl
+		$this->tpl->load("admin/blockType/list");
+	}
+	
+	public function addBlockTypeAction(){	
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Save"), "return false");
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Pie Chart"), $this->tpl->menu->navigate("listBlockType"));
+		// load the tpl
+		$this->tpl->load("admin/blockType/add");
+	}
+	
+	public function removeBlockTypeAction(){
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Save"), "return false");
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Pie Chart"), $this->tpl->menu->navigate("listBlockType"));
+		
+		// load the tpl
+		$this->tpl->load("admin/blockType/remove");
+	}
+	
+	public function editBlockTypeAction(){
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Save"), "return false");
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Pie Chart"), $this->tpl->menu->navigate("listBlockType"));
+		
+		// load the tpl
+		$this->tpl->load("admin/blockType/edit");
 	}
 }
 ?>

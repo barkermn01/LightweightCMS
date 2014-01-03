@@ -8,6 +8,11 @@ a, a:active, a:visited, a:hover{
 	color:inherit;
 }
 
+ul, li{
+	margin:0;
+	padding:0;
+}
+
 #body .header{
 	width:100%;
 	color:white;
@@ -108,7 +113,7 @@ a, a:active, a:visited, a:hover{
 
 #body .content .addon_content{
 	margin:65px auto;
-	width:800px;
+	width:1020px;
 }
 
 *.right{float:right;}

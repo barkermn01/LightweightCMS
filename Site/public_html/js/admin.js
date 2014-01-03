@@ -29,6 +29,7 @@ function setupMenuButtons(items){
 				$(this).addClass("active");
 			}
 		});
+		$('#body .content .addon_content form').bind('submit', handleForms);
     });
 	
 	function handleForms(e){
@@ -44,46 +45,51 @@ function setupMenuButtons(items){
 				});
 			}
 		});
+		return false;
 	}
 	
 	function handleResponse(data, textStatus, jqXHR){
 		$("#body .content .addon_content").html(data);
-		$("#body .content .overlay").css({"display":"none"});
-		$('form').bind('submit', handleForms);
-		$("#body .content .addon_content a").click(function(e){
-			if($(this).attr("target") != "_blank"){
-				e.preventDefault();
-				$("#body .content .overlay").css({"display":"block"});
-				downloadData($(this).attr("href"));
-				window.systemHashChange = true;
-				document.location.hash = $(this).attr("href").replace("/admin/plugin", "");
-				return false;
-			}
-		})
-		$('textarea.editor').ckeditor({
-			width:641,
-			bodyClass:"frmElem",
-			toolbar: [
-				{ name: 'document', items: [ 'Source', '-', 'NewPage','Preview', '-', 'Templates' ] },
-				{ name: 'styles', items: [ 'Styles', 'Format' ] },
-				{ 
-					name: 'clipboard', 
-					groups: [ 'clipboard', 'undo' ],
-				 	items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ]
-				},
-				'/',
-				{ 
-					name: 'basicstyles', 
-					groups: [ 'basicstyles', 'cleanup' ], 
-					items: [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] 
-				},
-				{ 
-					name: 'paragraph', 
-					groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], 
-					items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] 
-				},
-				{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
-			]
+		$(document).ready(function(e) {
+			$("#body .content .overlay").css({"display":"none"});
+			console.log("binding to submit");
+			console.log($('#body .content .addon_content form'));
+			$('#body .content .addon_content form').bind('submit', handleForms);
+			$("#body .content .addon_content a").click(function(e){
+				if($(this).attr("target") != "_blank"){
+					e.preventDefault();
+					$("#body .content .overlay").css({"display":"block"});
+					downloadData($(this).attr("href"));
+					window.systemHashChange = true;
+					document.location.hash = $(this).attr("href").replace("/admin/plugin", "");
+					return false;
+				}
+			})
+			$('textarea.editor').ckeditor({
+				width:641,
+				bodyClass:"frmElem",
+				toolbar: [
+					{ name: 'document', items: [ 'Source', '-', 'NewPage','Preview', '-', 'Templates' ] },
+					{ name: 'styles', items: [ 'Styles', 'Format' ] },
+					{ 
+						name: 'clipboard', 
+						groups: [ 'clipboard', 'undo' ],
+						items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ]
+					},
+					'/',
+					{ 
+						name: 'basicstyles', 
+						groups: [ 'basicstyles', 'cleanup' ], 
+						items: [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] 
+					},
+					{ 
+						name: 'paragraph', 
+						groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], 
+						items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] 
+					},
+					{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+				]
+			});
 		});
 	}
 	
