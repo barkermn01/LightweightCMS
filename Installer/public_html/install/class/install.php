@@ -155,7 +155,7 @@ class config_MySQL{
 		$sql = "INSERT INTO `users` VALUES(
 			NULL, 
 			'".$_SESSION['user']['username']."', 
-			'".$_SESSION['user']['password']."', 
+			sha1('".$_SESSION['user']['password']."'), 
 			'".$_SESSION['user']['email']."', 1, 0)";
 		$query = $db->query($sql);
 		$db->close();
