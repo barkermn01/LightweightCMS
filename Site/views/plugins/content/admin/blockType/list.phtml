@@ -1,3 +1,63 @@
 <?php
 	echo $this->menu->buildOutput();
 ?>
+<style>
+ul.list{
+	width:1020px;
+}
+ul.list li{
+	list-style:none;
+	clear:both;
+}
+
+ul.list li ul li{
+	float:left;
+	display:block;
+	min-width:100px;
+	list-style:none;
+	clear:none;
+}
+ul.list li ul li.heading{
+	font-weight:bold;
+	text-align:left;
+}
+
+ul.list li ul li.name{
+	width:820px;
+}
+
+ul.list li ul li.edit{
+	width:60px;
+}
+
+ul.list li ul li.remove{
+	width:20px;
+	text-align:center;
+}
+
+</style>
+<ul class="list">
+	<li>
+    	<ul>
+        	<li class="heading name">Name</li>
+            <li class="heading edit">Edit</li>
+            <li class="heading remove">Remove</li>
+        </ul>
+    </li>
+<?php foreach($this->blocks as $block){ ?>
+	<li>
+    	<ul>
+        	<li class="name">
+				<?php echo $block['type_name']; ?>
+            </li>
+        	<li class="edit">
+            	<a href="<?php echo $this->url->getMethodAddr("editBlockType"); ?>/id/<?php echo $block['type_id']; ?>">
+                	Edit
+                </a>
+            </li>
+        	<li class="remove"><input type="checkbox" name="remove[]" value="<?php echo $block['type_id']; ?>" /></li>
+        </ul>
+    </li>	
+<?php } ?>
+</ul>
+<div class="clear"></div>

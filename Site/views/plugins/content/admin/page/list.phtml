@@ -53,7 +53,7 @@ ul.list li ul li.remove{
             	<?php echo $page['e404'] == 1? "(404 page)":""; ?>
             </li>
         	<li class="edit"><a href="">Edit</a></li>
-        	<li class="remove"><input type="checkbox" name="remove[]" value="<?php echo $page->page_id; ?>" /></li>
+        	<li class="remove"><input type="checkbox" name="remove[]" value="<?php echo $page['page_id']; ?>" /></li>
         </ul>
     </li>	
 <?php } ?>

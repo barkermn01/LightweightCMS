@@ -50,6 +50,8 @@ class plugin_content_admin extends Plugin{
 		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Modify"), $this->tpl->menu->navigate("listPage"));
 		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Delete"), $this->tpl->menu->navigate("removeBlockType"));
 		
+		$this->tpl->blocks = $this->db->query()->select("*","block_types")->exec("getRows");
+		
 		// load the tpl
 		$this->tpl->load("admin/blockType/list");
 	}
@@ -70,8 +72,13 @@ class plugin_content_admin extends Plugin{
 	}
 	
 	public function editBlockTypeAction(){
+	global $_URL;
 		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Save"), "return false");
 		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Pie Chart"), $this->tpl->menu->navigate("listBlockType"));
+		
+		$block = $this->db->query()->select("*","block_types", array("type_id" => $_URL['id']))->exec("getRow");
+		$block['type_vars'] = json_decode($block['type_vars']);
+		$this->tpl->block = $block;
 		
 		// load the tpl
 		$this->tpl->load("admin/blockType/edit");
