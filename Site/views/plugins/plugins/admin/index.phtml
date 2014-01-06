@@ -1,77 +1,6 @@
 <?php 
 	echo $this->menu->buildOutput();
 ?>
-<style type="text/css">
-ul, li{
-	list-style:none;
-	margin-left:0;
-	padding:0;
-}
-ul li ul li{
-	float:left;
-	height:25px;
-	line-height:25px;
-	overflow-y:hidden;
-}
-
-ul li ul.row:hover li{
-	background-color:#2DE6ED;
-}
-
-ul.table{
-	width:800px;
-}
-
-ul.table li.id{
-	width:60px;
-	text-align:center;
-}
-
-ul.table li.name{
-	width:300px;
-}
-
-ul.table li.author{
-	width:160px;
-}
-
-ul.table li.version{
-	width:80px;
-}
-
-ul.table li.info{
-	width:60px;
-	text-align:center;
-}
-
-ul.table li.active{
-	width:70px;
-	height:22px;
-	text-align:center;
-	padding-top:3px;
-}
-
-ul.table ul.header li.active{
-	padding-top:0;
-	height:30px;
-}
-
-ul.table li.delete{
-	width:70px;
-	text-align:center;
-}
-
-ul.table ul.header{
-	background-color:#888;
-	height:20px;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-}
-
-.clear{
-	clear:both;
-}
-</style>
 These are your currently installed plugins some are system plugins and can't be deleted.
 <ul class="table">
 	<li>
@@ -147,7 +76,9 @@ These are your currently installed plugins some are system plugins and can't be 
             <li class="clear"></li>
         </ul>
     </li>
+	<div class="cear"></div>
 <?php
 	}
 ?>
 </ul>
+<div class="cear"></div>

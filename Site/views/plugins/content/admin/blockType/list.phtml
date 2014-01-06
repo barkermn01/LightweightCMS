@@ -1,52 +1,41 @@
 <?php
 	echo $this->menu->buildOutput();
 ?>
-<style>
-ul.list{
-	width:1020px;
+<style type="text/css">
+ul.table li ul li.name{
+	width:800px;
 }
-ul.list li{
-	list-style:none;
-	clear:both;
+li.edit{
+	width: 60px;
 }
-
-ul.list li ul li{
-	float:left;
-	display:block;
-	min-width:100px;
-	list-style:none;
-	clear:none;
-}
-ul.list li ul li.heading{
-	font-weight:bold;
-	text-align:left;
-}
-
-ul.list li ul li.name{
-	width:820px;
-}
-
-ul.list li ul li.edit{
-	width:60px;
-}
-
-ul.list li ul li.remove{
-	width:20px;
-	text-align:center;
-}
-
 </style>
-<ul class="list">
+<?php if($this->removeErr){ ?>
+	<div class="error">
+    	There we're no blocks selected to be removed!
+    </div>
+<?php } ?>
+<?php if($this->removed){ ?>
+	<div class="success">
+    	You have successfully removed the blocks from your system if they were used on a template they have been deleted!
+    </div>
+<?php } ?>
+<form action="<?php echo $this->url->getMethodAddr("removeBlockType"); ?>" id="delTypesFrm" method="post">
+<ul class="table">
 	<li>
-    	<ul>
+    	<ul class="header">
+        	<li class="heading id">ID</li>
         	<li class="heading name">Name</li>
             <li class="heading edit">Edit</li>
-            <li class="heading remove">Remove</li>
+            <li class="heading delete">Remove</li>
         </ul>
+		<div class="clear"></div>
     </li>
 <?php foreach($this->blocks as $block){ ?>
 	<li>
     	<ul>
+        	<li class="id">
+            	<?php echo $block['type_id']; ?>
+            </li>
         	<li class="name">
 				<?php echo $block['type_name']; ?>
             </li>
@@ -55,9 +44,11 @@ ul.list li ul li.remove{
                 	Edit
                 </a>
             </li>
-        	<li class="remove"><input type="checkbox" name="remove[]" value="<?php echo $block['type_id']; ?>" /></li>
+        	<li class="delete"><input type="checkbox" name="remove[]" value="<?php echo $block['type_id']; ?>" /></li>
         </ul>
+		<div class="clear"></div>
     </li>	
 <?php } ?>
 </ul>
+</form>
 <div class="clear"></div>

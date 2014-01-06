@@ -16,6 +16,10 @@ abstract class Plugin{
 		$this->tpl->setPluginPath($clsName);
 	}
 	
+	public function redirectToUrl($url){
+		die('<script type="text/javascript">downloadData("'.$url.'")</script>');
+	}
+	
 	public abstract function indexAction();
 }
 ?>

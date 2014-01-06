@@ -7,7 +7,10 @@ class library_mysql_queryBuilder{
 		$this->con = $con;
 	}
 	
-	private function buildWhere(array $mixed){
+	private function buildWhere($mixed){
+		if(is_string($mixed)){
+			return $mixed;
+		}
 		$str = "";
 		foreach($mixed as $key => $val){
 			if(!is_string($val)){

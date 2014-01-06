@@ -8,31 +8,22 @@ function setupMenuButtons(items){
 	}
 }
 
-(function($){
-	$(document).ready(function(e) {
-        if(window.location.hash == "" || window.location.hash == "#" ){
-			window.location.hash = "/home";
+function downloadData(address){
+	for(var instanceName in CKEDITOR.instances) {
+		try{
+			CKEDITOR.instances[instanceName].destroy();
+		}catch(e){
 		}
-		var loc = window.location.hash.replace("#", "");
-		locParts = loc.split('/');
-		$("#body .tabs .tab.active").removeClass("active");
-		if(locParts.length > 0){
-			$("#body .tabs .tab#tab_"+locParts[1]).addClass("active");
-		}
-		if($("#body .tabs .tab.active").length < 1){
-			$("#body .tabs .tab#tab_plugins").addClass("active");
-		}
-		$("#body .tabs .tab").click(function(e){
-			if(!$(this).hasClass("active")){
-				document.location.hash = "/"+$(this).attr("id").replace("tab_", "");
-				$("#body .tabs .tab.active").removeClass("active");
-				$(this).addClass("active");
-			}
-		});
-		$('#body .content .addon_content form').bind('submit', handleForms);
-    });
-	
-	function handleForms(e){
+	}
+	setupMenuButtons([]);
+	$.ajax({
+		success: handleResponse,
+		type:"GET",
+		url:address
+	})
+}
+
+function handleForms(e){
 		e.preventDefault();
 		$(this).ajaxSubmit({
 			success: handleResponse,
@@ -52,8 +43,6 @@ function setupMenuButtons(items){
 		$("#body .content .addon_content").html(data);
 		$(document).ready(function(e) {
 			$("#body .content .overlay").css({"display":"none"});
-			console.log("binding to submit");
-			console.log($('#body .content .addon_content form'));
 			$('#body .content .addon_content form').bind('submit', handleForms);
 			$("#body .content .addon_content a").click(function(e){
 				if($(this).attr("target") != "_blank"){
@@ -92,23 +81,31 @@ function setupMenuButtons(items){
 			});
 		});
 	}
-	
-	function downloadData(address){
-		
-		for(var instanceName in CKEDITOR.instances) {
-			try{
-		   		CKEDITOR.instances[instanceName].destroy();
-			}catch(e){
-			}
+
+(function($){
+	$(document).ready(function(e) {
+        if(window.location.hash == "" || window.location.hash == "#" ){
+			window.location.hash = "/home";
 		}
-		setupMenuButtons([]);
-		$.ajax({
-			success: handleResponse,
-			type:"GET",
-			url:address
-		})
-	}
-	
+		var loc = window.location.hash.replace("#", "");
+		locParts = loc.split('/');
+		$("#body .tabs .tab.active").removeClass("active");
+		if(locParts.length > 0){
+			$("#body .tabs .tab#tab_"+locParts[1]).addClass("active");
+		}
+		if($("#body .tabs .tab.active").length < 1){
+			$("#body .tabs .tab#tab_plugins").addClass("active");
+		}
+		$("#body .tabs .tab").click(function(e){
+			if(!$(this).hasClass("active")){
+				document.location.hash = "/"+$(this).attr("id").replace("tab_", "");
+				$("#body .tabs .tab.active").removeClass("active");
+				$(this).addClass("active");
+			}
+		});
+		$('#body .content .addon_content form').bind('submit', handleForms);
+    });
+		
 	downloadData("/admin/plugin"+document.location.hash.replace("#", ""));
 	
 	$(window).bind( 'hashchange', function(e) { 

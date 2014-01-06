@@ -2,59 +2,36 @@
 	echo $this->menu->buildOutput();
 ?>
 <style>
-ul.list{
-	width:1020px;
+ul.table li ul li.name{
+	width:800px;
 }
-ul.list li{
-	list-style:none;
-	clear:both;
+li.edit{
+	width: 60px;
 }
-
-ul.list li ul li{
-	float:left;
-	display:block;
-	min-width:100px;
-	list-style:none;
-	clear:none;
-}
-ul.list li ul li.heading{
-	font-weight:bold;
-	text-align:left;
-}
-
-ul.list li ul li.title{
-	width:820px;
-}
-
-ul.list li ul li.edit{
-	width:60px;
-}
-
-ul.list li ul li.remove{
-	width:20px;
-	text-align:center;
-}
-
 </style>
-<ul class="list">
+<ul class="table">
 	<li>
-    	<ul>
-        	<li class="heading title">Title</li>
+    	<ul class="header">
+        	<li class="heading id">ID</li>
+        	<li class="heading name">Title</li>
             <li class="heading edit">Edit</li>
-            <li class="heading remove">Remove</li>
+            <li class="heading delete">Remove</li>
         </ul>
+		<div class="clear"></div>
     </li>
 <?php foreach($this->pages as $page){ ?>
 	<li>
     	<ul>
-        	<li class="title">
+        	<li class="id"><?php echo $page['page_id']; ?></li>
+        	<li class="name">
 				<?php echo $page['page_title']; ?>
             	<?php echo $page['homepage'] == 1? "(homepage)":""; ?>
             	<?php echo $page['e404'] == 1? "(404 page)":""; ?>
             </li>
         	<li class="edit"><a href="">Edit</a></li>
-        	<li class="remove"><input type="checkbox" name="remove[]" value="<?php echo $page['page_id']; ?>" /></li>
+        	<li class="delete"><input type="checkbox" name="remove[]" value="<?php echo $page['page_id']; ?>" /></li>
         </ul>
+		<div class="clear"></div>
     </li>	
 <?php } ?>
 </ul>

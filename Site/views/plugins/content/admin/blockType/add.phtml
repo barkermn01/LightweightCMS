@@ -20,9 +20,9 @@ $(document).ready(function(e) {
     $("input#addVar").click(function(e) {
 		var count = parseInt($("input[type=hidden]#var_count").val());
         var html = '<label for="name_'+count+'">Name</label>'
-		+'<input value="" name="type_vars[name]" id="name_'+count+'" /><br />'
+		+'<input value="" name="type_vars['+count+'][name]" id="name_'+count+'" /><br />'
 		+'<label for="type_'+count+'">Type</label>'
-		+'<select name="type_vars[type]" id="type_'+count+'">'
+		+'<select name="type_vars['+count+'][type]" id="type_'+count+'">'
 		+'	<option value="text">Textbox</option>'
 		+'	<option value="WYSIWYG">WYSIWYG (CK Editor)</option>'
 		+'	<option value="textarea">Textarea</option>'
@@ -33,17 +33,26 @@ $(document).ready(function(e) {
     });
 });
 </script>
-<form action="<?php echo $this->url->getFormAddr(); ?>" method="post">
-	<label for="name">Name</label>
-    <input type="text" value="" id="name" name="name" />
-    <br />
-    <label for="vars">
-    	Variables
-    </label>
-    <input type="button" id="addVar" name="add" value="Add Var" /><br />
-    <div id="vars">
-    </div>
-    <input type="hidden" name="var_count" id="var_count" value="0" />
-	<label for="html">HTML Code</label>	
-	<textarea class="htmlCodeArea" id="html" name="html"></textarea>
-</form>
+
+<div class="form">
+	<form action="<?php echo $this->url->getFormAddr(); ?>" method="post" id="addBlockTypeForm">
+    	<div class="page">
+        	<div class="title-edit">Create New Block Type</div>
+            <div class="form">
+                <input type="hidden" name="posted" value="true" />
+                <label for="name">Name</label>
+                <input type="text" value="" id="name" name="name" />
+                <br />
+                <label for="vars">
+                    Variables
+                </label>
+                <input type="button" id="addVar" name="add" value="Add Var" /><br />
+                <div id="vars">
+                </div>
+                <input type="hidden" name="var_count" id="var_count" value="0" />
+                <label for="html">HTML Code</label>	
+                <textarea class="htmlCodeArea" id="html" name="html"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
