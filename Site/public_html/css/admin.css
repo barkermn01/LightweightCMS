@@ -183,7 +183,9 @@ ul.table ul.header{
 
 #body .content .addon_content{
 	margin:65px auto;
-	width:1020px;
+	width:1000px;
+	padding-left:10px;
+	padding-right:10px;
 }
 
 *.right{float:right;}
@@ -346,7 +348,7 @@ ul.table ul.header{
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2989d8', endColorstr='#1e5799',GradientType=0 );
 }
 .form .page label{
-	width:140px;
+	width:120px;
 	float:left;
 	padding-left:10px;
 }
@@ -376,4 +378,8 @@ ul.table ul.header{
 
 .cke{
 	float:left;
+}
+
+.page .form{
+	padding-top: 5px;
 }

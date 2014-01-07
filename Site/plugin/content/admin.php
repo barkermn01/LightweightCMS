@@ -20,8 +20,14 @@ class plugin_content_admin extends Plugin{
 	
 	public function addPageAction(){
 		// setup the sub menu
-		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Save"), "return false");
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Save"), "$('#pageAddFrm').trigger('submit');");
 		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Modify"), $this->tpl->menu->navigate("listPage"));
+		
+		$this->tpl->blocks = $this->db->query()->select("*", "block_types")->exec("getRows"); 
+		
+		if(isset($_POST['posted']) && $_POST['posted'] === "true"){
+			die("<pre>".print_r($_POST, true)."</pre>");
+		}
 		
 		// load the tpl
 		$this->tpl->load("admin/page/add");

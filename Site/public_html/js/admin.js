@@ -54,30 +54,32 @@ function handleForms(e){
 					return false;
 				}
 			})
-			$('textarea.editor').ckeditor({
-				width:641,
-				bodyClass:"frmElem",
-				toolbar: [
-					{ name: 'document', items: [ 'Source', '-', 'NewPage','Preview', '-', 'Templates' ] },
-					{ name: 'styles', items: [ 'Styles', 'Format' ] },
-					{ 
-						name: 'clipboard', 
-						groups: [ 'clipboard', 'undo' ],
-						items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ]
-					},
-					'/',
-					{ 
-						name: 'basicstyles', 
-						groups: [ 'basicstyles', 'cleanup' ], 
-						items: [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] 
-					},
-					{ 
-						name: 'paragraph', 
-						groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], 
-						items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] 
-					},
-					{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
-				]
+			$('textarea.editor').each(function(){
+				$(this).ckeditor({
+					width:$(this).width(),
+					bodyClass:"frmElem",
+					toolbar: [
+						{ name: 'document', items: [ 'Source', '-', 'NewPage','Preview', '-', 'Templates' ] },
+						{ name: 'styles', items: [ 'Styles', 'Format' ] },
+						{ 
+							name: 'clipboard', 
+							groups: [ 'clipboard', 'undo' ],
+							items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ]
+						},
+						'/',
+						{ 
+							name: 'basicstyles', 
+							groups: [ 'basicstyles', 'cleanup' ], 
+							items: [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] 
+						},
+						{ 
+							name: 'paragraph', 
+							groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], 
+							items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] 
+						},
+						{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+					]
+				});
 			});
 		});
 	}

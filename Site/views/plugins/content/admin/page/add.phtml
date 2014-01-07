@@ -1,3 +1,339 @@
 <?php
 	echo $this->menu->buildOutput();
 ?>
+<style>
+.form .page input{
+	width: 830px;
+}
+.form .page textarea{
+	width: 830px;
+	height:90px;
+}
+
+.hiddenContent{
+	display:none;
+}
+.blockSelection .block{
+	width:200px;
+	float:left;
+	height:20px;
+	padding:2px;
+	text-align:center;
+	background: rgb(41,137,216);
+	background: -moz-linear-gradient(top, rgba(41,137,216,1) 0%, rgba(30,87,153,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(41,137,216,1)), color-stop(100%,rgba(30,87,153,1)));
+	background: -webkit-linear-gradient(top, rgba(41,137,216,1) 0%,rgba(30,87,153,1) 100%);
+	background: -o-linear-gradient(top, rgba(41,137,216,1) 0%,rgba(30,87,153,1) 100%);
+	background: -ms-linear-gradient(top, rgba(41,137,216,1) 0%,rgba(30,87,153,1) 100%);
+	background: linear-gradient(to bottom, rgba(41,137,216,1) 0%,rgba(30,87,153,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2989d8', endColorstr='#1e5799',GradientType=0 );
+	color: white;
+	margin-left:5px;
+	margin-bottom:5px;
+	border-radius:3px;
+	cursor:default;
+}
+.blockSelection .page .form{
+	padding-left: 100px;
+}
+.pageBlocks{
+	min-height:300px;
+	border-radius:5px;
+	width:1000px;
+	margin-top:5px;
+	position:absolute;
+}
+.pageBlocks .block{
+	margin-bottom:5px;
+}
+.pageBlocks .block .title-edit .delete{
+	background-image: url(/image/admin/Delete.png);
+	width: 25px;
+	height: 25px;
+	float: right;
+	margin-top: -1px;
+	background-size: 100%;
+}
+#overlay{
+	position: absolute;
+	background-color: rgba(125,125,125,0.4);
+	top: 0px;
+	z-index: 9999;
+	display: none;
+	width: inherit;
+	height: 300px;
+}
+#overlay .message{
+    width: 200px;
+    height: 20px;
+    background-color: #FFFFFF;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+}
+</style>
+<div class="blockSelection">
+   <div class="form">
+        <div class="page">
+            <div class="title-edit">Block you can drag or double click to your page.</div>
+            <div class="form">
+            <div class="clear"></div>
+            <?php foreach($this->blocks as $block){ ?>
+                <div class="block block_drop" data-block-id="block_<?php echo $block['type_id']; ?>">
+                    <?php echo $block['type_name']; ?>
+                </div>
+            <?php } ?>
+            <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+   </div>
+   <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<form action="<?php echo $this->url->getMethodAddr("addPage"); ?>" method="post" id="pageAddFrm">
+<input type="hidden" name="posted" value="true" />
+<div class="pageBlocks" id="pagedrop">
+	<div class="block">
+    	<div class="form">
+        	<div class="page">
+                <div class="title-edit">Page Defaults!</div>
+                <div class="form">
+                	<label>Page Name</label>
+                    <input type="text" name="title" value="" id="pagenamee" />
+                	<label>Page Url</label>
+                    <input type="text" name="url" value="<?php echo (($_SERVER['HTTPS'] != "on")? "http://":"https://").$_SERVER['HTTP_HOST']; ?>/index/" id="pageurl" disabled="disabled" />
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+	<div id="overlay">
+  		<div class="message">Drop Here!</div>
+	</div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+</form>
+<div class="clear"></div>
+<div class="hiddenContent">
+	<?php foreach($this->blocks as $block){ ?>
+        <div class="block" id="block_<?php echo $block['type_id']; ?>">
+        	<div class="form">            
+                <div class="page">
+                    <div class="title-edit">
+						<?php echo $block['type_name']; ?>
+                    	<div class="delete"></div>
+                    </div>
+                    <div class="form">
+                        <label for="nameOutput">Block Name</label>
+                        <input type="text" name="blocks[][name]" value="" class="updateNeeded" />
+                        <input type="hidden" name="blocks[][type]" value="<?php echo $block['type_id']; ?>" class="updateNeeded" />
+                        <div class="clear"></div>
+                        <?php 
+                            $vars = json_decode($block['type_vars']);
+                            $i = 0;
+                            foreach($vars as $var){
+                        ?>
+                            <label for="var_<?php echo $var->name; ?>_"><?php echo ucfirst($var->name); ?></label>
+                            <input class="updateNeeded" type="hidden" name="blocks[][vars][<?php echo $i; ?>][name]" value="<?php echo $var->name; ?>" />
+                            <?php
+                                switch($var->type){
+                                    case "text":
+                                    ?>
+                                    <input 
+                                    	class="updateNeeded"
+                                        id="var_<?php echo $var->name; ?>_" 
+                                        type="text" 
+                                        name="blocks[][vars][<?php echo $i; ?>][value]" />
+                            			<div class="clear"></div>
+                                    <?php
+                                    break;
+                                    case "textarea":
+                                    ?>
+                                    <textarea 
+                                     	class="updateNeeded"
+                                        id="var_<?php echo $var->name; ?>_"
+                                        name="blocks[][vars][<?php echo $i; ?>][value]"></textarea>
+                            			<div class="clear"></div>
+                                    <?php
+                                    break;
+                                    case "WYSIWYG":
+                                    ?>
+                                    <textarea class="contentEditor updateNeeded"
+                                        id="var_<?php echo $var->name; ?>_"
+                                        name="blocks[][vars][<?php echo $i; ?>][value]"></textarea>
+                            			<div class="clear"></div>
+                                    <?php
+                                    break;
+                                    case "upload":
+                                    ?>
+                                    <input 
+                                    	class="updateNeeded"
+                                        id="var_<?php echo $var->name; ?>_" 
+                                        type="upload" 
+                                        name="blocks[][vars][<?php echo $i; ?>][value]" />
+                            			<div class="clear"></div>
+                                    <?php
+                                    break;
+                                }
+                            ?>
+                            <div class="clear"></div>
+                        <?php }	?>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div><br />
+    <?php } ?>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#pagenamee").change(function(){
+		$("#pageurl").val(
+			window.location.protocol+"//"+window.location.hostname+
+			"/index/"
+			+encodeURIComponent($(this).val().replace(/ /g, "-")));
+	});
+	$("#pagedrop").droppable({
+		accept: '.block_drop',
+		drop: function(event, ui) {
+			var block_id = $(ui.draggable).attr("data-block-id");
+			var newBlock = $("#"+block_id).clone();
+			newBlock.removeAttr("id");
+			$("#pagedrop").append(newBlock.addClass("block"));
+			var count = 0;
+			$("#pagedrop .block").each(function(){
+				var i = 0;
+				$(".updateNeeded", $(this)).each(function(){
+					var name = $(this).attr("name");
+					name = name.replace(/blocks\[([0-9]*)\]/, "blocks["+count+"]");
+					$(this).attr("name", name);
+					i++; 
+				});
+				count++;
+			});
+			$(".contentEditor", newBlock).ckeditor({
+				width:$(this).width()-180,
+				bodyClass:"frmElem",
+				toolbar: [
+					{ name: 'document', items: [ 'Source', '-', 'NewPage','Preview', '-', 'Templates' ] },
+					{ name: 'styles', items: [ 'Styles', 'Format' ] },
+					{ 
+						name: 'clipboard', 
+						groups: [ 'clipboard', 'undo' ],
+						items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ]
+					},
+					'/',
+					{ 
+						name: 'basicstyles', 
+						groups: [ 'basicstyles', 'cleanup' ], 
+						items: [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] 
+					},
+					{ 
+						name: 'paragraph', 
+						groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], 
+						items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] 
+					},
+					{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+				]
+			});
+			$("#overlay").height($(".pageBlocks").height());
+			$(".pageBlocks .block .title-edit .delete").unbind("click");
+			$(".pageBlocks .block .title-edit .delete").click(clickDelHandler);
+			$( ".pageBlocks" ).sortable({
+				handle: ".title-edit" 
+			});
+        }
+	});
+	$(".block_drop").draggable({
+        helper: 'clone',
+		start:function(){
+			$("#overlay").css({"display":"block"});
+		},
+		stop:function(){
+			$("#overlay").css({"display":"none"});
+		}
+    });
+	$(".block_drop").dblclick(function(e) {
+        var block_id = $(this).attr("data-block-id");
+		var newBlock = $("#"+block_id).clone();
+		newBlock.removeAttr("id");
+		$("#pagedrop").append(newBlock.addClass("block"));
+		var count = 0;
+		$("#pagedrop .block").each(function(){
+			var i = 0;
+			$(".updateNeeded", $(this)).each(function(){
+				var name = $(this).attr("name");
+				name = name.replace(/blocks\[([0-9]*)\]/, "blocks["+count+"]");
+				$(this).attr("name", name);
+				i++; 
+			});
+			count++;
+		});
+		$(".contentEditor", newBlock).ckeditor({
+			width:820,
+			bodyClass:"frmElem",
+			toolbar: [
+				{ name: 'document', items: [ 'Source', '-', 'NewPage','Preview', '-', 'Templates' ] },
+				{ name: 'styles', items: [ 'Styles', 'Format' ] },
+				{ 
+					name: 'clipboard', 
+					groups: [ 'clipboard', 'undo' ],
+					items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ]
+				},
+				'/',
+				{ 
+					name: 'basicstyles', 
+					groups: [ 'basicstyles', 'cleanup' ], 
+					items: [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] 
+				},
+				{ 
+					name: 'paragraph', 
+					groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], 
+					items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] 
+				},
+				{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+			]
+		});
+		$("#overlay").height($(".pageBlocks").height());
+		$(".pageBlocks .block .title-edit .delete").unbind("click");
+		$(".pageBlocks .block .title-edit .delete").click(clickDelHandler);
+		$( ".pageBlocks" ).sortable({
+			handle: ".title-edit",
+			update: function(e, ui){
+				var count = 0;
+				$("#pagedrop .block").each(function(){
+					var i = 0;
+					$(".updateNeeded", $(this)).each(function(){
+						var name = $(this).attr("name");
+						name = name.replace(/blocks\[([0-9]*)\]/, "blocks["+count+"]");
+						$(this).attr("name", name);
+						i++; 
+					});
+					count++;
+				});
+			}
+		});
+    });
+	function clickDelHandler(e){
+		$(e.currentTarget).parent().parent().remove();
+		var count = 0;
+		$("#pagedrop .block").each(function(){
+			var i = 0;
+			$(".updateNeeded", $(this)).each(function(){
+				var name = $(this).attr("name");
+				name = name.replace(/blocks\[([0-9]*)\]/, "blocks["+count+"]");
+				$(this).attr("name", name);
+				i++; 
+			});
+			count++;
+		});
+	}
+});
+</script>
