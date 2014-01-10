@@ -17,7 +17,9 @@ abstract class Plugin{
 	}
 	
 	public function redirectToUrl($url){
-		die('<script type="text/javascript">downloadData("'.$url.'")</script>');
+		die('<a href="'.$url.'" id="tempLinkRedirect"></a><script type="text/javascript">$(document).ready(function(){
+				$("#tempLinkRedirect").trigger("click");
+			});</script>');
 	}
 	
 	public abstract function indexAction();

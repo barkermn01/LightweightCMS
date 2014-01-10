@@ -107,6 +107,13 @@
                     <input type="text" name="title" value="" id="pagenamee" />
                 	<label>Page Url</label>
                     <input type="text" name="url" value="<?php echo (($_SERVER['HTTPS'] != "on")? "http://":"https://").$_SERVER['HTTP_HOST']; ?>/index/" id="pageurl" disabled="disabled" />
+                    <div style="text-align:center; width:1000px">
+                        <label style="padding-left:335px;">Is Homepage</label>
+                        <input type="checkbox" name="homepage" value="true" style="float:left;width:30px;" />
+                        <label>Is 404 Page</label>
+                        <input type="checkbox" name="is404" value="true" style="float:left;width:30px;" />
+                        <div class="clear"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -167,16 +174,6 @@
                                     <textarea class="contentEditor updateNeeded"
                                         id="var_<?php echo $var->name; ?>_"
                                         name="blocks[][vars][<?php echo $i; ?>][value]"></textarea>
-                            			<div class="clear"></div>
-                                    <?php
-                                    break;
-                                    case "upload":
-                                    ?>
-                                    <input 
-                                    	class="updateNeeded"
-                                        id="var_<?php echo $var->name; ?>_" 
-                                        type="upload" 
-                                        name="blocks[][vars][<?php echo $i; ?>][value]" />
                             			<div class="clear"></div>
                                     <?php
                                     break;
