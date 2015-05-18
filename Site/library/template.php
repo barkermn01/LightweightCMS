@@ -2,6 +2,26 @@
 class library_template{
 	private $plugin;
 	private $vars = array();
+	private $container;
+	private $methods = array();
+	
+	public final function setContainer(&$con){
+		$this->container = &$con;
+	}
+	
+	public final function allowContainerFunction($func_name){
+		$this->methods[$func_name] = true;
+	}
+	
+	public final function denyContainerFunction($func_name){
+		$this->methods[$func_name] = false;
+	}
+	
+	public final function __call($method, $args){
+		if(isset($this->methods[$method]) && $this->methods[$method]){
+			return call_user_func(array($this->container, $method), $args);
+		}
+	}
 	
 	public final function __set($name, $value){
 		$this->vars[$name] = $value;

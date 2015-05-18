@@ -1,37 +1,9 @@
 <?php $this->load("include/html_head"); ?>
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=114689402070698";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-<div id="body">
-	<div class="logo contained">
-    	<img src="/image/logo.png" alt="Doxie Promotions Hard Rock and Metal" title="Doxie Promotions logo">
-    </div>
-    <div class="contained">
-        <div class="left">
-        <?php if($this->content['default'] == '1') { ?>
-            <?php if($this->check("custom/page_".$this->content['page_id'])){ ?>
-                <?php $this->load("custom/page_".$this->content['page_id']); ?>	
-            <?php }else{ 
-            ?>
-            <h1><?php echo $this->content['title']; ?></h1>
-            <?php echo $this->content['content']; ?>
-            <?php } ?>
-        <?php } ?>
-        </div>
-        <div class="right">
-        	<div class="fb-like-box" data-href="https://www.facebook.com/DoxiePromo" data-width="250" data-show-faces="false" data-colorscheme="dark" data-stream="true" data-header="true"></div>
-        </div>
-        <div class="clear"></div>
-    </div>
-    <div class="footer">
-        <div class="contained">
-            Site Design &amp; Content &copy; Doxie Promotions<br /> 
-        </div>
-    </div>
-</div>
+<pre>
+	<?php if($this->check("custom/custom_".$this->page["page_id"])){
+		$this->load("custom/custom_".$this->page["page_id"]);
+	}else{?>
+		<?php echo $this->getPrepairedBlock("content"); ?>
+    <?php } ?>
+</pre>
 <?php $this->load("include/html_foot"); ?>

@@ -94,13 +94,45 @@ class plugin_content_admin extends Plugin{
 	
 	public function editPageAction(){
 	global $_URL;
-		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Save"), "return false");
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Back"), 'history.go(-1);');
+		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Save"), '$("#pageEditFrm").trigger(\'submit\');');
 		$this->tpl->menu->addButton($this->tpl->url->getCMSImage("Modify"), $this->tpl->menu->navigate("listPage"));
-				
-		$this->tpl->added = isset($_URL['added']);
 		$this->tpl->updated = isset($_URL['updated']);
-		
+		$this->tpl->added = isset($_URL['added']);
 		$this->tpl->page = $this->db->query()->select("*", "pages", "`page_id`='".$_URL['id']."'")->exec("getRow"); 
+		
+		if(isset($_POST['posted']) && $_POST['posted'] === "true"){
+			if((isset($_POST['homepage']))){
+				$this->db->query()->update("pages", array("homepage" => 0), array("homepage" => 1))->exec();
+			}
+			if((isset($_POST['is404']))){
+				$this->db->query()->update("pages", array("e404" => 0), array("e404" => 1))->exec();
+			}
+			$page_id = $_URL['id'];
+			$this->db->query()->update("pages", array(
+				"page_title" => $_POST['title'],
+				"homepage" => (isset($_POST['homepage']))? 1:0,
+				"e404" => (isset($_POST['is404']))? 1:0,
+			), array("page_id" => $page_id))->exec("insert_id");
+			$pos = 0;
+			$this->db->query()->delete("content_blocks", array('page_id' => $_URL['id']))->exec();
+			foreach($_POST['blocks'] as $block){
+				foreach($block['vars'] as $var){
+					$var['value'] = str_replace(array("\r", "\n"), " ", $var['value']);
+				}
+				$json = json_encode($block['vars']);
+				$data = array(
+					"block_type" => $block['type'],
+					"block_name" => $block['name'],
+					"block_pos" => $pos,
+					"page_id" => $page_id,
+					"block_data" => addslashes($json)
+				);
+				$test = $this->db->query()->insert($data, "content_blocks")->exec();
+				$pos++;
+			}
+		}
+		
 		$this->tpl->blocks = $this->db->query()->select("*", "block_types")->exec("getRows"); 
 		$this->tpl->pageBlocks = $this->db->query()->raw(
 			"SELECT 
@@ -117,6 +149,7 @@ class plugin_content_admin extends Plugin{
 			)->exec("getRows");
 		
 		// load the tpl
+		$this->tpl->page_id = $_URL['id'];
 		$this->tpl->load("admin/page/edit");
 	}
 	

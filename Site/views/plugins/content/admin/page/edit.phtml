@@ -77,10 +77,10 @@
 </style>
 
 <?php if($this->added){ ?>
-	<div class="success">Your new block type has been created please review below.</div>
+	<div class="success">Your new page has been added please review below</div>
 <?php } ?>
 <?php if($this->updated){ ?>
-	<div class="success">Your new block type has been changed please review below.</div>
+	<div class="success">Your new page has been changed please review below.</div>
 <?php } ?>
 
 <div class="blockSelection">
@@ -103,7 +103,7 @@
    <div class="clear"></div>
 </div>
 <div class="clear"></div>
-<form action="<?php echo $this->url->getMethodAddr("addPage"); ?>" method="post" id="pageAddFrm">
+<form action="<?php echo $this->url->getMethodAddr("editPage"); ?>/id/<?php echo $this->page_id; ?>/updated/true" method="post" id="pageEditFrm">
 <input type="hidden" name="posted" value="true" />
 <div class="pageBlocks" id="pagedrop">
 	<div class="block">
@@ -146,12 +146,12 @@
 							$types = json_decode($block['type_vars']);
 							$i = 0;
                             foreach($vars as $var){
-							$thisType = "";
-							foreach($types as $type){
-								if($block['type_name'] == $type->name){
-									$thisType = $type;
+								$thisType = "";
+								foreach($types as $type){
+									if($block['type_name'] == $type->name){
+										$thisType = $type;
+									}
 								}
-							}
                         ?>
                             <label for="var_<?php echo $var->name; ?>_"><?php echo ucfirst($var->name); ?></label>
                             <input class="updateNeeded" type="hidden" name="blocks[<?php echo $c; ?>][vars][<?php echo $i; ?>][name]" value="<?php echo $var->name; ?>" />
